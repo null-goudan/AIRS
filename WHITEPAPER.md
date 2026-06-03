@@ -85,7 +85,7 @@ An AIRS Runtime should be able to:
 - Convert user interaction into semantic action feedback
 - Produce audit logs for sensitive actions
 
-The runtime may be implemented inside an operating system, AI shell, browser-like container, application framework, or device-specific interaction layer.
+In this draft, the runtime is positioned as an AI-native operating system layer. Browser-like containers, application frameworks, and device-specific interaction shells may integrate with it as adapters, but they are not the primary protocol scope.
 
 ## 8. Safety and Trust
 

@@ -46,7 +46,7 @@ Possible deliverables:
 
 ## Open Questions
 
-- Should AIRS be positioned primarily as an OS-level protocol, an app-level protocol, or a layered model?
+- Which responsibilities belong to the AI-native operating system runtime, and which can be delegated to app or service adapters?
 - What should be the minimum required fields for an `Intent View`?
 - How should services provide rendering hints without taking over interface policy?
 - How should AIRS represent high-risk actions such as payment, booking, messaging, or account changes?

@@ -72,4 +72,4 @@ AIRS treats safety as part of the interface protocol.
 
 ## AIRS Runtime
 
-The AIRS Runtime validates and renders `Intent View` objects. It may run inside an OS shell, browser-like container, application framework, or device-specific runtime.
+The AIRS Runtime validates and renders `Intent View` objects. In this draft, it is positioned as part of an AI-native operating system layer; browser-like containers, application frameworks, and device-specific runtimes may integrate with it as adapters.

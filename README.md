@@ -2,7 +2,7 @@
 
 **AIRS is a rendering protocol and interaction paradigm for AI-native operating systems.**
 
-AIRS defines how AI agents describe dynamic interfaces through structured `Intent View` objects, so AI-native runtimes can safely render, interact with, and audit AI-generated interfaces.
+AIRS defines how AI agents describe dynamic interfaces through structured `Intent View` objects, so AI-native operating system runtimes can safely render, interact with, and audit AI-generated interfaces.
 
 The goal of AIRS is not to let AI freely generate arbitrary UI code. Instead, AIRS provides a structured protocol between AI agents, service providers, and the operating system runtime, allowing AI-generated interfaces to be constrained, explainable, auditable, and renderable across devices.
 
@@ -109,7 +109,7 @@ This repository is intended to host an open discussion about AI-generated interf
 
 Good starting points:
 
-- Should AIRS be OS-level, application-level, or both?
+- What responsibilities should an AI-native operating system runtime own when rendering AIRS views?
 - What is the minimal useful `Intent View` structure?
 - Which render components should AIRS 0.1 standardize?
 - How should risk levels and safety gates be represented?
