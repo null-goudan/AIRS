@@ -1,0 +1,126 @@
+{
+  "airs_version": "0.1",
+  "view_id": "error_recovery_001",
+  "intent": {
+    "name": "recover_failed_booking",
+    "stage": "error",
+    "user_goal": "Complete the hotel booking after the payment authorization failed.",
+    "confidence": 0.81
+  },
+  "data_sources": [
+    {
+      "id": "booking_service_001",
+      "provider": "hotel_booking_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T21:40:00+08:00",
+      "stale_after_seconds": 180,
+      "trust_level": "trusted"
+    },
+    {
+      "id": "payment_service_001",
+      "provider": "payment_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T21:40:02+08:00",
+      "stale_after_seconds": 60,
+      "trust_level": "trusted"
+    }
+  ],
+  "layout": {
+    "mode": "adaptive_cards",
+    "device_adaptive": true,
+    "density": "comfortable"
+  },
+  "components": [
+    {
+      "id": "error_message",
+      "type": "error_message",
+      "title": "Payment authorization failed",
+      "content": "The booking was not completed. No charge was captured.",
+      "fields": [
+        {
+          "label": "Booking",
+          "value": "Harbor View Hotel, 2 nights",
+          "source": "booking_service_001"
+        },
+        {
+          "label": "Reason",
+          "value": "Card issuer requested additional verification.",
+          "source": "payment_service_001"
+        }
+      ],
+      "actions": [
+        "retry_payment",
+        "change_payment_method",
+        "cancel_booking"
+      ],
+      "risk_level": "high"
+    },
+    {
+      "id": "recovery_options",
+      "type": "list",
+      "title": "Recovery options",
+      "items": [
+        {
+          "label": "Retry after verification",
+          "action": "retry_payment"
+        },
+        {
+          "label": "Use another payment method",
+          "action": "change_payment_method"
+        },
+        {
+          "label": "Cancel the booking attempt",
+          "action": "cancel_booking"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "id": "retry_payment",
+      "label": "Retry payment",
+      "type": "tool_call",
+      "target": "payment_service.retry_authorization",
+      "next_stage": "confirmation",
+      "risk_level": "high",
+      "requires_confirmation": true
+    },
+    {
+      "id": "change_payment_method",
+      "label": "Change payment method",
+      "type": "navigation",
+      "next_stage": "form_filling",
+      "risk_level": "medium"
+    },
+    {
+      "id": "cancel_booking",
+      "label": "Cancel booking attempt",
+      "type": "cancel",
+      "next_stage": "result",
+      "risk_level": "low"
+    }
+  ],
+  "safety": {
+    "risk_level": "high",
+    "requires_user_confirmation": true,
+    "forbidden_auto_actions": [
+      "retry_payment",
+      "capture_payment",
+      "final_booking"
+    ],
+    "permission_scopes": [
+      "booking.read",
+      "payment.authorize"
+    ],
+    "audit_tags": [
+      "payment",
+      "error_recovery",
+      "confirmation_required"
+    ],
+    "data_sensitivity": "financial"
+  },
+  "state": {
+    "booking_attempt_id": "hotel_attempt_7781",
+    "payment_status": "authorization_failed"
+  }
+}

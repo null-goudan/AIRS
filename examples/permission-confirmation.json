@@ -1,0 +1,112 @@
+{
+  "airs_version": "0.1",
+  "view_id": "permission_confirmation_001",
+  "intent": {
+    "name": "send_calendar_invite",
+    "stage": "confirmation",
+    "user_goal": "Send a meeting invite to the project group for tomorrow morning.",
+    "confidence": 0.86
+  },
+  "data_sources": [
+    {
+      "id": "calendar_service_001",
+      "provider": "calendar_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T15:20:00+08:00",
+      "stale_after_seconds": 120,
+      "trust_level": "trusted"
+    },
+    {
+      "id": "user_input_001",
+      "provider": "user",
+      "type": "user_input",
+      "fetched_at": "2026-06-03T15:19:42+08:00",
+      "trust_level": "trusted"
+    }
+  ],
+  "layout": {
+    "mode": "form",
+    "device_adaptive": true,
+    "density": "comfortable"
+  },
+  "components": [
+    {
+      "id": "permission_prompt",
+      "type": "permission_prompt",
+      "title": "Confirm calendar invite",
+      "content": "AIRS Runtime requires confirmation before sending invites to other people.",
+      "fields": [
+        {
+          "label": "Time",
+          "value": "Tomorrow 09:30-10:00",
+          "source": "calendar_service_001"
+        },
+        {
+          "label": "Recipients",
+          "value": "Project group",
+          "source": "user_input_001",
+          "sensitive": true
+        },
+        {
+          "label": "Action",
+          "value": "Send calendar invite",
+          "source": "system"
+        }
+      ],
+      "actions": [
+        "confirm_send_invite",
+        "edit_invite",
+        "cancel_invite"
+      ],
+      "risk_level": "high"
+    }
+  ],
+  "actions": [
+    {
+      "id": "confirm_send_invite",
+      "label": "Confirm and send",
+      "type": "tool_call",
+      "target": "calendar_service.send_invite",
+      "next_stage": "execution",
+      "risk_level": "high",
+      "requires_confirmation": true
+    },
+    {
+      "id": "edit_invite",
+      "label": "Edit",
+      "type": "navigation",
+      "next_stage": "form_filling",
+      "risk_level": "low"
+    },
+    {
+      "id": "cancel_invite",
+      "label": "Cancel",
+      "type": "cancel",
+      "next_stage": "result",
+      "risk_level": "low"
+    }
+  ],
+  "safety": {
+    "risk_level": "high",
+    "requires_user_confirmation": true,
+    "forbidden_auto_actions": [
+      "send_external_message",
+      "modify_calendar"
+    ],
+    "permission_scopes": [
+      "calendar.read",
+      "calendar.write",
+      "contacts.group_read"
+    ],
+    "audit_tags": [
+      "calendar",
+      "external_recipients",
+      "confirmation_required"
+    ],
+    "data_sensitivity": "personal"
+  },
+  "state": {
+    "draft_event_id": "draft_evt_1024",
+    "confirmation_deadline": "2026-06-03T15:25:00+08:00"
+  }
+}

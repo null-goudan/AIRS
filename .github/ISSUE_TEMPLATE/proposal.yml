@@ -1,0 +1,27 @@
+name: Proposal
+description: Propose a protocol, schema, runtime, or safety change.
+title: "[Proposal] "
+labels:
+  - proposal
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem does this proposal solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: What should change?
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility
+      description: Does this affect schema, examples, or runtime behavior?
+    validations:
+      required: false

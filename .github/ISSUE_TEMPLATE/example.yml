@@ -1,0 +1,20 @@
+name: Example
+description: Suggest or discuss an AIRS Intent View example.
+title: "[Example] "
+labels:
+  - example
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario
+      description: What user task should this example cover?
+    validations:
+      required: true
+  - type: textarea
+    id: view_shape
+    attributes:
+      label: Expected Intent View Shape
+      description: Which intent, components, actions, and safety gates should be included?
+    validations:
+      required: false

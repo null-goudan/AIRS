@@ -1,0 +1,363 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://airs.dev/schema/airs.schema.json",
+  "title": "AIRS Intent View",
+  "description": "A conceptual JSON Schema for AIRS 0.1 Intent View objects.",
+  "type": "object",
+  "required": [
+    "airs_version",
+    "view_id",
+    "intent",
+    "components",
+    "actions",
+    "safety"
+  ],
+  "properties": {
+    "airs_version": {
+      "type": "string",
+      "const": "0.1",
+      "description": "AIRS protocol version."
+    },
+    "view_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Unique identifier for the Intent View."
+    },
+    "intent": {
+      "type": "object",
+      "required": [
+        "name",
+        "stage",
+        "user_goal"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "stage": {
+          "$ref": "#/$defs/task_stage"
+        },
+        "user_goal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": true
+    },
+    "data_sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/data_source"
+      },
+      "default": []
+    },
+    "layout": {
+      "type": "object",
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": [
+            "adaptive_cards",
+            "list",
+            "grid",
+            "form",
+            "media",
+            "conversational",
+            "mixed"
+          ]
+        },
+        "device_adaptive": {
+          "type": "boolean"
+        },
+        "density": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "comfortable",
+            "expanded"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    },
+    "safety": {
+      "$ref": "#/$defs/safety"
+    },
+    "state": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "task_stage": {
+      "type": "string",
+      "enum": [
+        "clarify",
+        "searching",
+        "selection",
+        "comparison",
+        "detail",
+        "form_filling",
+        "confirmation",
+        "execution",
+        "result",
+        "error"
+      ]
+    },
+    "risk_level": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "data_source": {
+      "type": "object",
+      "required": [
+        "id",
+        "provider",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "api",
+            "user_input",
+            "model_generated",
+            "local_context",
+            "system",
+            "cached"
+          ]
+        },
+        "fetched_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "stale_after_seconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "trust_level": {
+          "type": "string",
+          "enum": [
+            "trusted",
+            "unverified",
+            "model_inferred"
+          ]
+        }
+      },
+      "additionalProperties": true
+    },
+    "component": {
+      "type": "object",
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "summary_card",
+            "option_card",
+            "detail_panel",
+            "form",
+            "field",
+            "list",
+            "media",
+            "permission_prompt",
+            "error_message",
+            "action_bar"
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "subtitle": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source": {
+          "type": "string"
+        },
+        "risk_level": {
+          "$ref": "#/$defs/risk_level"
+        }
+      },
+      "additionalProperties": true
+    },
+    "field": {
+      "type": "object",
+      "required": [
+        "label",
+        "value"
+      ],
+      "properties": {
+        "label": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        "source": {
+          "type": "string"
+        },
+        "sensitive": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "action": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "type",
+        "risk_level"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "semantic_action",
+            "navigation",
+            "tool_call",
+            "permission_request",
+            "cancel",
+            "handoff"
+          ]
+        },
+        "next_stage": {
+          "$ref": "#/$defs/task_stage"
+        },
+        "target": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "risk_level": {
+          "$ref": "#/$defs/risk_level"
+        },
+        "requires_confirmation": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": true
+    },
+    "safety": {
+      "type": "object",
+      "required": [
+        "risk_level"
+      ],
+      "properties": {
+        "risk_level": {
+          "$ref": "#/$defs/risk_level"
+        },
+        "requires_user_confirmation": {
+          "type": "boolean"
+        },
+        "forbidden_auto_actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "permission_scopes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "audit_tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data_sensitivity": {
+          "type": "string",
+          "enum": [
+            "none",
+            "personal",
+            "financial",
+            "health",
+            "location",
+            "mixed"
+          ]
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}

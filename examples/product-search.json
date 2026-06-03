@@ -1,0 +1,138 @@
+{
+  "airs_version": "0.1",
+  "view_id": "product_comparison_001",
+  "intent": {
+    "name": "compare_products",
+    "stage": "comparison",
+    "user_goal": "Compare lightweight laptops suitable for travel and software development.",
+    "confidence": 0.88
+  },
+  "data_sources": [
+    {
+      "id": "product_api_001",
+      "provider": "commerce_search_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T11:00:00+08:00",
+      "stale_after_seconds": 600,
+      "trust_level": "trusted"
+    },
+    {
+      "id": "agent_summary_001",
+      "provider": "ai_agent",
+      "type": "model_generated",
+      "fetched_at": "2026-06-03T11:00:07+08:00",
+      "trust_level": "model_inferred"
+    }
+  ],
+  "layout": {
+    "mode": "grid",
+    "device_adaptive": true,
+    "density": "compact"
+  },
+  "components": [
+    {
+      "id": "comparison_summary",
+      "type": "summary_card",
+      "title": "Shortlist ready",
+      "content": "The options prioritize weight, memory, battery life, and developer ergonomics.",
+      "source": "agent_summary_001"
+    },
+    {
+      "id": "product_a",
+      "type": "option_card",
+      "title": "Ultralight Pro 14",
+      "fields": [
+        {
+          "label": "Weight",
+          "value": "1.15 kg",
+          "source": "product_api_001"
+        },
+        {
+          "label": "Memory",
+          "value": "32 GB",
+          "source": "product_api_001"
+        },
+        {
+          "label": "Fit",
+          "value": "Best for frequent travel.",
+          "source": "agent_summary_001"
+        }
+      ],
+      "actions": [
+        "select_product_a",
+        "open_product_detail"
+      ],
+      "risk_level": "low"
+    },
+    {
+      "id": "product_b",
+      "type": "option_card",
+      "title": "Workstation Air 13",
+      "fields": [
+        {
+          "label": "Weight",
+          "value": "1.28 kg",
+          "source": "product_api_001"
+        },
+        {
+          "label": "Memory",
+          "value": "24 GB",
+          "source": "product_api_001"
+        },
+        {
+          "label": "Fit",
+          "value": "Balanced price and battery life.",
+          "source": "agent_summary_001"
+        }
+      ],
+      "actions": [
+        "select_product_b",
+        "open_product_detail"
+      ],
+      "risk_level": "low"
+    }
+  ],
+  "actions": [
+    {
+      "id": "select_product_a",
+      "label": "Select Ultralight Pro 14",
+      "type": "semantic_action",
+      "next_stage": "detail",
+      "risk_level": "low"
+    },
+    {
+      "id": "select_product_b",
+      "label": "Select Workstation Air 13",
+      "type": "semantic_action",
+      "next_stage": "detail",
+      "risk_level": "low"
+    },
+    {
+      "id": "open_product_detail",
+      "label": "Open product detail",
+      "type": "navigation",
+      "next_stage": "detail",
+      "risk_level": "low"
+    }
+  ],
+  "safety": {
+    "risk_level": "low",
+    "requires_user_confirmation": false,
+    "forbidden_auto_actions": [
+      "purchase",
+      "payment"
+    ],
+    "permission_scopes": [
+      "commerce_search"
+    ],
+    "audit_tags": [
+      "shopping",
+      "comparison"
+    ],
+    "data_sensitivity": "none"
+  },
+  "state": {
+    "selected": null,
+    "sort": "balanced"
+  }
+}

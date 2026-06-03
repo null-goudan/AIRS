@@ -1,0 +1,101 @@
+{
+  "airs_version": "0.1",
+  "view_id": "flight_selection_001",
+  "intent": {
+    "name": "book_flight",
+    "stage": "selection",
+    "user_goal": "Find a cheap flight from Dalian to Shanghai tomorrow afternoon.",
+    "confidence": 0.92
+  },
+  "data_sources": [
+    {
+      "id": "flight_service_001",
+      "provider": "flight_search_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T10:30:00+08:00",
+      "stale_after_seconds": 300,
+      "trust_level": "trusted"
+    },
+    {
+      "id": "agent_reasoning_001",
+      "provider": "ai_agent",
+      "type": "model_generated",
+      "fetched_at": "2026-06-03T10:30:05+08:00",
+      "trust_level": "model_inferred"
+    }
+  ],
+  "layout": {
+    "mode": "adaptive_cards",
+    "device_adaptive": true,
+    "density": "comfortable"
+  },
+  "components": [
+    {
+      "id": "summary",
+      "type": "summary_card",
+      "title": "3 suitable flights found",
+      "content": "Flights are filtered by afternoon departure and lower price.",
+      "source": "agent_reasoning_001"
+    },
+    {
+      "id": "flight_1",
+      "type": "option_card",
+      "title": "CZ6521",
+      "subtitle": "14:20 Dalian -> 16:25 Shanghai",
+      "fields": [
+        {
+          "label": "Price",
+          "value": "CNY 720",
+          "source": "flight_service_001"
+        },
+        {
+          "label": "Reason",
+          "value": "Lowest price and suitable departure time.",
+          "source": "agent_reasoning_001"
+        }
+      ],
+      "actions": [
+        "select_flight_1",
+        "view_flight_detail"
+      ],
+      "risk_level": "medium"
+    }
+  ],
+  "actions": [
+    {
+      "id": "select_flight_1",
+      "label": "Select this flight",
+      "type": "semantic_action",
+      "next_stage": "confirmation",
+      "risk_level": "medium",
+      "requires_confirmation": false
+    },
+    {
+      "id": "view_flight_detail",
+      "label": "View details",
+      "type": "navigation",
+      "next_stage": "detail",
+      "risk_level": "low"
+    }
+  ],
+  "safety": {
+    "risk_level": "medium",
+    "requires_user_confirmation": false,
+    "forbidden_auto_actions": [
+      "payment",
+      "final_booking"
+    ],
+    "permission_scopes": [
+      "flight_search"
+    ],
+    "audit_tags": [
+      "travel",
+      "booking_candidate"
+    ],
+    "data_sensitivity": "personal"
+  },
+  "state": {
+    "selected": null,
+    "expires_at": "2026-06-03T10:35:00+08:00"
+  }
+}

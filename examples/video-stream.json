@@ -1,0 +1,108 @@
+{
+  "airs_version": "0.1",
+  "view_id": "video_stream_001",
+  "intent": {
+    "name": "watch_video",
+    "stage": "detail",
+    "user_goal": "Continue watching the saved conference talk on the living room display.",
+    "confidence": 0.9
+  },
+  "data_sources": [
+    {
+      "id": "media_service_001",
+      "provider": "media_library_service",
+      "type": "api",
+      "fetched_at": "2026-06-03T20:10:00+08:00",
+      "stale_after_seconds": 1800,
+      "trust_level": "trusted"
+    },
+    {
+      "id": "local_context_001",
+      "provider": "device_context",
+      "type": "local_context",
+      "fetched_at": "2026-06-03T20:10:01+08:00",
+      "trust_level": "trusted"
+    }
+  ],
+  "layout": {
+    "mode": "media",
+    "device_adaptive": true,
+    "density": "comfortable"
+  },
+  "components": [
+    {
+      "id": "video_player",
+      "type": "media",
+      "title": "AI-Native Interfaces: Runtime Protocols",
+      "fields": [
+        {
+          "label": "Progress",
+          "value": "00:31:42 / 01:05:00",
+          "source": "media_service_001"
+        },
+        {
+          "label": "Target device",
+          "value": "Living room display",
+          "source": "local_context_001"
+        }
+      ],
+      "actions": [
+        "play_video",
+        "cast_to_display",
+        "show_transcript"
+      ],
+      "risk_level": "low"
+    },
+    {
+      "id": "transcript_hint",
+      "type": "summary_card",
+      "title": "Transcript available",
+      "content": "The transcript can be shown alongside playback on personal devices.",
+      "source": "media_service_001"
+    }
+  ],
+  "actions": [
+    {
+      "id": "play_video",
+      "label": "Play",
+      "type": "semantic_action",
+      "next_stage": "execution",
+      "risk_level": "low"
+    },
+    {
+      "id": "cast_to_display",
+      "label": "Cast to display",
+      "type": "permission_request",
+      "next_stage": "confirmation",
+      "risk_level": "medium",
+      "requires_confirmation": true
+    },
+    {
+      "id": "show_transcript",
+      "label": "Show transcript",
+      "type": "navigation",
+      "next_stage": "detail",
+      "risk_level": "low"
+    }
+  ],
+  "safety": {
+    "risk_level": "medium",
+    "requires_user_confirmation": true,
+    "forbidden_auto_actions": [
+      "cast_to_external_device"
+    ],
+    "permission_scopes": [
+      "media_playback",
+      "local_network_devices"
+    ],
+    "audit_tags": [
+      "media",
+      "device_handoff"
+    ],
+    "data_sensitivity": "none"
+  },
+  "state": {
+    "playback_position_seconds": 1902,
+    "target_device": "living_room_display"
+  }
+}

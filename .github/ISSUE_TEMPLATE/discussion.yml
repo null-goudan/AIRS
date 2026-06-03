@@ -1,0 +1,23 @@
+name: Discussion
+description: Open a conceptual discussion about AIRS.
+title: "[Discussion] "
+labels:
+  - discussion
+body:
+  - type: markdown
+    attributes:
+      value: "Use this for open-ended protocol, runtime, safety, or design discussions."
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What should AIRS discuss or decide?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Why does this matter?
+    validations:
+      required: false
